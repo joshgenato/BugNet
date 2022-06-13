@@ -10,6 +10,9 @@ using System.Security.Claims;
 using System;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using BugNet.Data;
+using AutoMapper;
+using BugNet.Dtos;
 
 namespace BugNet.Controllers
 {
@@ -18,24 +21,21 @@ namespace BugNet.Controllers
     [Route("/api/user")]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        public IEnumerable<IdentityUser> Users { get; set; }
+        private readonly IIdentityAPIRepo _repository;
+        private readonly IMapper _mapper;
 
-        public UserController(UserManager<IdentityUser> userManager)
+        public UserController(IIdentityAPIRepo repository, IMapper mapper)
         {
-            _userManager = userManager;
+            _repository = repository;
+            _mapper = mapper;
         }
 
-        public IEnumerable<IdentityUser> Index()
+        [HttpGet]
+        public ActionResult<IEnumerable<CommandReadUserDto>> GetAllCommands()
         {
-            Users = _userManager.Users;
-            return Users;
+            var users = _repository.GetAllUsers();
+            return Ok(_mapper.Map<IEnumerable<CommandReadUserDto>>(users));
         }
-
-
-
-
-
     }
 
 }

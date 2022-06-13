@@ -1,3 +1,5 @@
+using System;
+using AutoMapper;
 using BugNet.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,6 +50,8 @@ namespace BugNet
                 opts.User.RequireUniqueEmail = true;
                 opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
             });
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IIdentityAPIRepo, SqlUserAPIRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

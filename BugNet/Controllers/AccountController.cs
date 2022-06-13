@@ -81,15 +81,8 @@ namespace BugNet.Controllers
             IdentityUser user = await userManager.FindByNameAsync(creds.Username);
             if (user != null)
             {
-                foreach (IPasswordValidator<IdentityUser> v in
-                         userManager.PasswordValidators)
-                {
-                    if ((await v.ValidateAsync(userManager, user,
-                            creds.Password)).Succeeded)
-                    {
-                        return true;
-                    }
-                }
+                return (await signinManager.CheckPasswordSignInAsync(user,
+                    creds.Password, true)).Succeeded;
             }
             return false;
         }
