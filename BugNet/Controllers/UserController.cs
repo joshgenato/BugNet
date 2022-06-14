@@ -19,6 +19,7 @@ namespace BugNet.Controllers
 
     [ApiController]
     [Route("/api/user")]
+    [Authorize(AuthenticationSchemes = "Identity.Application, Bearer")]
     public class UserController : ControllerBase
     {
         private readonly IIdentityAPIRepo _repository;
